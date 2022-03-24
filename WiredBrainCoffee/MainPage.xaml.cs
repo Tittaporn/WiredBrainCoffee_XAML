@@ -30,9 +30,11 @@ namespace WiredBrainCoffee
             this.Loaded += MainPage_Loaded;
             App.Current.Suspending += App_Suspending;
             _customerDataProvider = new CustomerDataProvider();
+            RequestedTheme = App.Current.RequestedTheme == ApplicationTheme.Dark
+                   ? ElementTheme.Dark
+                   : ElementTheme.Light;
         }
 
-   
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             // throw new NotImplementedException();
@@ -51,12 +53,6 @@ namespace WiredBrainCoffee
             await _customerDataProvider.SaveCustomersAsync(
                 customerListView.Items.OfType<Customer>());
             deferral.Complete(); // To close application when async done
-        }
-
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void ButtonAddCustomer_Click(object sender, RoutedEventArgs e)
@@ -90,30 +86,19 @@ namespace WiredBrainCoffee
         private void CustomerListView_SeletionChanged(object sender, SelectionChangedEventArgs e)
         {
             var customer = customerListView.SelectedItem as Customer;
+            customerDetailControl.Customer = customer;
+            /* Before Create Customer Detail File
             txtFirstName.Text = customer?.FirstName ?? "";
             txtLastName.Text = customer?.LastName ?? "";
             chkIsDeveloper.IsChecked = customer?.IsDeveloper;
+            */
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void ButtonToggleTheme_Click(object sender, RoutedEventArgs e)
         {
-            UpdateCustomer();
-        }
-
-        private void CheckBox_IsCheckedChanged(object sender, RoutedEventArgs e)
-        {
-            UpdateCustomer();
-        }
-
-        private void UpdateCustomer()
-        {
-            var customer = customerListView.SelectedItem as Customer;
-            if (customer != null)
-            {
-                customer.FirstName = txtFirstName.Text;
-                customer.LastName = txtLastName.Text;
-                customer.IsDeveloper = chkIsDeveloper.IsChecked.GetValueOrDefault();
-            }
+            this.RequestedTheme = RequestedTheme == ElementTheme.Dark
+                ? ElementTheme.Light
+                : ElementTheme.Dark;
         }
     }
 }

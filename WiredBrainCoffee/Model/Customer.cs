@@ -5,10 +5,13 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation.Metadata;
 using WiredBrainCoffee.Base;
 
 namespace WiredBrainCoffee.Model
 {
+    [CreateFromString(MethodName = "WiredBrainCoffee.Model.CustomerConverter.CreateCustomerFromString")]
+
     public class Customer : Observable
     {
         private string _firstName;
