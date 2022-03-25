@@ -15,21 +15,28 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using WiredBrainCoffee.Controls;
 using WiredBrainCoffee.DataProvider;
 using WiredBrainCoffee.Model;
+using WiredBrainCoffee.ViewModel;
 
 namespace WiredBrainCoffee
 {
     public sealed partial class MainPage : Page
     {
-        private CustomerDataProvider _customerDataProvider;
+     //   private CustomerDataProvider _customerDataProvider;
+
+        public MainViewModel ViewModel { get; }
 
         public MainPage()
         {
+           
             this.InitializeComponent();
+            ViewModel = new MainViewModel(new CustomerDataProvider());
+            DataContext = ViewModel;
             this.Loaded += MainPage_Loaded;
             App.Current.Suspending += App_Suspending;
-            _customerDataProvider = new CustomerDataProvider();
+            // _customerDataProvider = new CustomerDataProvider();
             RequestedTheme = App.Current.RequestedTheme == ApplicationTheme.Dark
                    ? ElementTheme.Dark
                    : ElementTheme.Light;
@@ -37,63 +44,37 @@ namespace WiredBrainCoffee
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            // throw new NotImplementedException();
-            customerListView.Items.Clear();
-            var customers = await _customerDataProvider.LoadCustomersAsync();
-            foreach (var customer in customers)
-            {
-                customerListView.Items.Add(customer);
-            }
+            /* Before Biding in Chapter 9
+             customerListView.Items.Clear();
+             var customers = await _customerDataProvider.LoadCustomersAsync();
+             foreach (var customer in customers)
+             {
+                 customerListView.Items.Add(customer);
+             }
+            */
+            await ViewModel.LoadAsync();
         }
 
         private async void App_Suspending(object sender, SuspendingEventArgs e)
         {
-            // throw new NotImplementedException();
-            var deferral = e.SuspendingOperation.GetDeferral();
-            await _customerDataProvider.SaveCustomersAsync(
-                customerListView.Items.OfType<Customer>());
-            deferral.Complete(); // To close application when async done
+            /* Before Biding in Chapter 9
+          var deferral = e.SuspendingOperation.GetDeferral();
+          await _customerDataProvider.SaveCustomersAsync(
+              customerListView.Items.OfType<Customer>());
+          deferral.Complete(); // To close application when async done
+               */
+            await ViewModel.SaveAsync();
         }
 
-        private void ButtonAddCustomer_Click(object sender, RoutedEventArgs e)
-        {
-            //var messageDialog = new MessageDialog("Customer added");
-            //await messageDialog.ShowAsync();
-            var customer = new Customer { FirstName = "New" };
-            customerListView.Items.Add(customer);
-            customerListView.SelectedItem = customer;
-        }
-
-        private void ButtonDeleteCustomer_Click(object sender, RoutedEventArgs e)
-        {
-            var customer = customerListView.SelectedItem as Customer;
-            if (customer != null)
-            {
-                customerListView.Items.Remove(customer);
-            }
-        }
-
-        private void ButtonMove_Click(object sender, RoutedEventArgs e)
-        {
-            // int column = (int)customerListGrid.GetValue(Grid.ColumnProperty);
-            int column = Grid.GetColumn(customerListGrid);
-            int newColumn = column == 0 ? 2 : 0;
-            // customerListGrid.SetValue(Grid.ColumnProperty, newColumn);
-            Grid.SetColumn(customerListGrid, newColumn);
-            moveSymbol.Symbol = newColumn == 0 ? Symbol.Forward : Symbol.Back;
-        }
-
-        private void CustomerListView_SeletionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var customer = customerListView.SelectedItem as Customer;
-            customerDetailControl.Customer = customer;
-            /* Before Create Customer Detail File
-            txtFirstName.Text = customer?.FirstName ?? "";
-            txtLastName.Text = customer?.LastName ?? "";
-            chkIsDeveloper.IsChecked = customer?.IsDeveloper;
-            */
-        }
-
+      private void ButtonMove_Click(object sender, RoutedEventArgs e)
+      {
+          // int column = (int)customerListGrid.GetValue(Grid.ColumnProperty);
+          int column = Grid.GetColumn(customerListGrid);
+          int newColumn = column == 0 ? 2 : 0;
+          // customerListGrid.SetValue(Grid.ColumnProperty, newColumn);
+          Grid.SetColumn(customerListGrid, newColumn);
+          moveSymbol.Symbol = newColumn == 0 ? Symbol.Forward : Symbol.Back;
+      }       
         private void ButtonToggleTheme_Click(object sender, RoutedEventArgs e)
         {
             this.RequestedTheme = RequestedTheme == ElementTheme.Dark
@@ -102,3 +83,33 @@ namespace WiredBrainCoffee
         }
     }
 }
+
+/* Use this code below before chapter 9, binding to your data
+    private void ButtonAddCustomer_Click(object sender, RoutedEventArgs e)
+{
+    //var messageDialog = new MessageDialog("Customer added");
+    //await messageDialog.ShowAsync();
+    var customer = new Customer { FirstName = "New" };
+    customerListView.Items.Add(customer);
+    customerListView.SelectedItem = customer;
+}
+
+private void ButtonDeleteCustomer_Click(object sender, RoutedEventArgs e)
+{
+    var customer = customerListView.SelectedItem as Customer;
+    if (customer != null)
+    {
+        customerListView.Items.Remove(customer);
+    }
+}
+
+private void CustomerListView_SeletionChanged(object sender, SelectionChangedEventArgs e)
+{
+    var customer = customerListView.SelectedItem as Customer;
+    customerDetailControl.Customer = customer;
+    // Before Create Customer Detail File --> Use this code below
+    // txtFirstName.Text = customer?.FirstName ?? "";
+    // txtLastName.Text = customer?.LastName ?? "";
+    // chkIsDeveloper.IsChecked = customer?.IsDeveloper;
+}
+*/

@@ -10,6 +10,7 @@
    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     d:DesignWidth="600"
     d:DesignHeight="400">
+  <!--  x:DefaultBindMode="OneWay" -->
     
     <!-- RequestedTheme="Default" To Request the theme for the page and everything else-->
     
@@ -72,6 +73,62 @@
                           x:Name="moveSymbol"/>
                     </StackPanel>
                 </Button>
+                <Button Margin="10" Click="{x:Bind ViewModel.AddCustomer}">
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="AddFriend"/>
+                        <TextBlock Text="Add" Margin="5 0 0 0"/>
+                    </StackPanel>
+                </Button>
+                <Button Margin="10" Click="{x:Bind ViewModel.DeleteCustomer}"
+                        IsEnabled="{x:Bind ViewModel.IsCustomerSelected,Mode=OneWay}">
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Delete"/>
+                        <TextBlock Text="Delete" Margin="5 0 0 0"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+          
+
+             <ListView Grid.Row="1" ItemsSource="{x:Bind ViewModel.Customers,Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.SelectedCustomer,Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Customer">
+                            <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{x:Bind FirstName,Mode=OneWay}" FontWeight="Bold"/>
+                             <TextBlock Text="{x:Bind LastName,Mode=OneWay}" Margin="5 0 0 0"/>
+                            <TextBlock Text="Developer" Margin="5 0 0 0" Opacity="0.5" Visibility="{x:Bind IsDeveloper,Mode=OneWay}"/>
+                        </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+             </Grid>
+                  
+
+        <!--Customer detail -->
+        <controls:CustomerDetailControl 
+            Grid.Row="1" Grid.Column="1"
+            Customer="{x:Bind ViewModel.SelectedCustomer,Mode=OneWay}"
+            Visibility="{x:Bind ViewModel.IsCustomerSelected,Mode=OneWay}"/>
+             <!--Customer="{Binding SelectedCustomer,Mode=OneWay}"/>
+                                       Customer="{StaticResource customerDonny}"-->
+    </Grid>
+</Page>
+      <!--
+      <Grid Grid.Row="1"
+             x:Name="customerListGrid"
+              Background="{ThemeResource customerListBackgroundBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="10" Click="ButtonMove_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Forward"
+                          x:Name="moveSymbol"/>
+                    </StackPanel>
+                </Button>
                 <Button Margin="10" Click="ButtonAddCustomer_Click">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="AddFriend"/>
@@ -85,24 +142,23 @@
                     </StackPanel>
                 </Button>
             </StackPanel>
-
-            <ListView Grid.Row="1" 
-                      x:Name="customerListView"
-                      DisplayMemberPath="FirstName"
-                      SelectionChanged="CustomerListView_SeletionChanged">
+    <ListView Grid.Row="1" ItemsSource="{Binding Customers,Mode=OneWay}"
+                      SelectedItem="{Binding SelectedCustomer,Mode=TwoWay}"
+                      x:Name="customerListView">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding FirstName,Mode=OneWay}" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding LastName,Mode=OneWay}" Margin="5 0 0 0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate> -->
+                  <!--    DisplayMemberPath="FirstName" -->
+                <!--  SelectionChanged="CustomerListView_SeletionChanged" -->
                 <!-- ^ To Display Name in ListView -->
                 <!-- To Create Customer in ListView -->
                 <!-- <modelx:Customer FirstName="Lee" LastName="Saelee" IsDeveloper="False"/> -->
-            </ListView>
-        </Grid>
-
-        <!--Customer detail -->
-        <controls:CustomerDetailControl Grid.Row="1" Grid.Column="1"
-                                 x:Name="customerDetailControl"/>
-                                        <!--Customer="{StaticResource customerDonny}"-->
-    </Grid>
-</Page>
-    
+      
     <!--To Comment in XMAL ==> This is Chapter 3 Create and Working with object by Thomas Claudius Huber
     <Page.Content>
         <Grid>
