@@ -9,16 +9,46 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
    <!-- x:Name="root" -->
-
+    <!-- Move this to resouces folder to use anywher in the app 
+    <UserControl.Resources>
+        ==> We can use thi for inheritage from resouces
+        <Style x:Key="myCustomTextBoxStyle" TargetType="TextBox"
+               BasedOn="{StaticResource myTextBoxStyle}">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="CornerRadius" Value="0"/>
+        </Style>
+        
+        <Style x:Key="myTextBoxStyle" TargetType="TextBox">
+            <Style.Setters>
+                <Setter Property="Margin" Value="10"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                 <Setter Property="Grid.Row" Value="1"/> 
+            </Style.Setters>
+        </Style> 
+    </UserControl.Resources>-->
+    
     <StackPanel>
-        <TextBox Header="Firstname" Margin="10"
+        <TextBox Header="Firstname"
                  Text="{x:Bind Customer.FirstName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBox Header="Lastname" Margin="10" 
+        <TextBox Header="Lastname"
                  Text="{x:Bind Customer.LastName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
         <CheckBox Content="Is developer" Margin="10" 
                  IsChecked="{x:Bind Customer.IsDeveloper,Mode=TwoWay}"/>
     </StackPanel>
 </UserControl>
+
+<!-- Before use style in Chapter19 Mastering Styles and Templates
+    Style="{x:Null}" ==> To not use implicitly style
+    <StackPanel>
+        <TextBox Header="Firstname" Margin="10" CornerRadius="5"
+                 Text="{x:Bind Customer.FirstName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Header="Lastname" Margin="10" CornerRadius="5"
+                 Text="{x:Bind Customer.LastName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+        <CheckBox Content="Is developer" Margin="10" 
+                 IsChecked="{x:Bind Customer.IsDeveloper,Mode=TwoWay}"/>
+    </StackPanel>
+</UserControl>
+    -->
 <!-- Before use data binding x:Bind in chapter 9  
     <StackPanel>
         <TextBox Header="Firstname" Margin="10"
