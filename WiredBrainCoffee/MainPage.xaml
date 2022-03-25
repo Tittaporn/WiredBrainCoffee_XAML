@@ -7,13 +7,12 @@
     xmlns:controls="using:WiredBrainCoffee.Controls"
     xmlns:model="using:WiredBrainCoffee.Model"
     mc:Ignorable="d"
-   Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     d:DesignWidth="600"
     d:DesignHeight="400">
+    
   <!--  x:DefaultBindMode="OneWay" -->
-    
-    <!-- RequestedTheme="Default" To Request the theme for the page and everything else-->
-    
+    <!-- RequestedTheme="Default" To Request the theme for the page and everything else--> 
     <!-- Move this to App.xaml To user anywhere in the application 
     <Page.Resources>
          <model:Customer x:Key="customerDonny" FirstName="Donny" LastName="Supervisor" IsDeveloper="False"/>
@@ -26,7 +25,7 @@
     <!-- This is Chapter 4 Mastering XAML Layout by Thomas Claudius Huber-->
         <Grid>
         <Grid.Resources>
-                <!-- <model:Customer x:Key="customerDonny" FirstName="Donny McCormick" LastName="Supervisor" IsDeveloper="False"/>-->
+         <!-- <model:Customer x:Key="customerDonny" FirstName="Donny McCormick" LastName="Supervisor" IsDeveloper="False"/>-->
         </Grid.Resources>
             <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -113,7 +112,8 @@
                                        Customer="{StaticResource customerDonny}"-->
     </Grid>
 </Page>
-      <!--
+    
+      <!-- This change before using viewModel
       <Grid Grid.Row="1"
              x:Name="customerListGrid"
               Background="{ThemeResource customerListBackgroundBrush}">
